@@ -1,3 +1,13 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+# Файлы и папки операционной системы
+.DS_Store
+Thumbs.db
+
+# Файлы редактора
+.idea
+*.sublime*
+.vscode
+
+out/
