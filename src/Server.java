@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Server {
+    private static final int SERVERNUMBER = (int)(Math.random() * 10);
+
     public static void main(String[] args) throws IOException {
+        System.out.println("SERVERNUMBER = " + SERVERNUMBER);
         ServerSocket serverSocket = new ServerSocket(8000);
         int count = 0;
         boolean serverWork = true;
@@ -13,29 +16,36 @@ public class Server {
             Socket clientSocket = serverSocket.accept(); // получение от клиента
             count++;
             System.out.println("Client accepted: " + count);
-            // работает пока клиент не подключиться -> долгая
-            // clientSocket.getOutputStream().write(3);// по одному байту
-            // clientSocket.getOutputStream().write(("HTTP/1.0 200 OK\n" +
-            //  "Content-type:text/html\n"+
-            //  "\r\n"+
-            // "<h1>Hello bro</h1>\n").getBytes());
-
 
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(clientSocket.getInputStream()));
-           String request = reader.readLine();
+            String request = reader.readLine();
+            String text = "<p>You made a wish :" + request + "</p>";
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(
+                            clientSocket.getOutputStream())
+            );
+            String winOrLose = "You lose .....";
+            try {
+                if (SERVERNUMBER == Integer.parseInt(request)) {
+                    winOrLose = "You WIN" + "Server wish = " + SERVERNUMBER;
+                }
+            }
+            catch (Exception foo){
+                text = "You use browser";
+                winOrLose = "Need client app";
+            }
 
-            OutputStreamWriter writer = new OutputStreamWriter(clientSocket.getOutputStream());
             String answer = "<h1>Hello bro</h1>" +
                     "<p>You " + count + "</p>" +
-                    "<p>You message:" + request.length()+ "</p>";
-            System.out.println(answer);
+                     text +
+                    "<p>" + winOrLose + "</p>";
             writer.write("HTTP/1.0 200 OK\n" +
                     "Content-type:text/html\n" +
                     "Content-Length:" + answer.length() + "\n" +
                     "\r\n" +
                     answer);
-
+            writer.newLine();
             writer.flush();
             writer.close();
             reader.close();
