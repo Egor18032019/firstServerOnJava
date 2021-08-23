@@ -1,7 +1,6 @@
 import java.net.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class Server {
     private static final int SERVERNUMBER = (int)(Math.random() * 10);

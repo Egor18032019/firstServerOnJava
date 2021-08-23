@@ -19,10 +19,6 @@ public class Client {
                 System.out.println("Напишите целое число больше нуля но меньше 10: ");
             }
         }
-
-
-
-
         if (thisClient.clientNumber > 0) {
             Socket clientSocket = new Socket("127.0.0.1", 8000);
 
@@ -31,8 +27,8 @@ public class Client {
 
             //отправили
             writer.write(thisClient.clientNumber + "\n"); // обязательно ставить \n
-            writer.flush();
-            // ждем ответ
+            writer.flush(); //метод flush() выбрасывает всё из буфера в соответствующий поток.
+
             InputStreamReader reader = new InputStreamReader(clientSocket.getInputStream());
             BufferedReader strReader = new BufferedReader(reader);
             List answerServer = new ArrayList<>();
